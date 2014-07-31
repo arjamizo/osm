@@ -254,14 +254,8 @@ $(document).ready(function() {
   document.onmousemove = readMouseMove;
 
   document.onkeydown = function(e) {
-    // Search page (CTRL + f)
-    if (e.ctrlKey === true && e.keyCode === 70) {
-      e.preventDefault();
-      // TODO: Implement searching?
-      alert('Searching has not yet been implemented.');
-      return false;
-      // Debug console (` key)
-    } else if (e.keyCode === 192) {
+    // Debug console (` key)
+    if (e.keyCode === 192) {
       e.preventDefault();
       gui.Window.get().showDevTools();
       return false;
