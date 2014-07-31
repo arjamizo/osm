@@ -29,49 +29,49 @@ function imageSearch(query) {
       var resultsDiv = document.getElementById('results');
       if (images[0]) {
       results.className = 'page-header';
-      images.forEach(function(image) {
-        // NOTE: This is a little hack I implemented to replace imgur
-        // thumbnails with the full image.
-        if (image.url.substring(0, 19) === 'http://i.imgur.com/') {
-          image.url = image.url.replace('b.jpg', '.jpg');
-        }
+        images.forEach(function(image) {
+          // NOTE: This is a little hack I implemented to replace imgur
+          // thumbnails with the full image.
+          if (image.url.substring(0, 19) === 'http://i.imgur.com/') {
+            image.url = image.url.replace('b.jpg', '.jpg');
+          }
 
-        resultsCount++;
-        var file = fs.createWriteStream('./tmp/' + md5(image.url));
-        var req = request({url: image.url, proxy: getSetting('proxy')});
-        req.pipe(file);
+          resultsCount++;
+          var file = fs.createWriteStream('./tmp/' + md5(image.url));
+          var req = request({url: image.url, proxy: getSetting('proxy')});
+          req.pipe(file);
 
-        req.on('end', function() {
-          exif ('./tmp/' + md5(image.url), function(err, obj) {
-            var exifData = '';
-            if (err === null) {
-              for(var key in obj) {
-                if (obj.hasOwnProperty(key) &&
-                    key !== 'exiftool version number' &&
-                    key !== 'file name' &&
-                    key !== 'directory' &&
-                    key !== 'file inode change date time' &&
-                    key !== 'file modification date time' &&
-                    key !== 'file access date time' &&
-                    key !== 'file permissions') {
-                    exifData += ucwords(key) + ': ' + obj[key] + '<br>';
+          req.on('end', function() {
+            exif ('./tmp/' + md5(image.url), function(err, obj) {
+              var exifData = '';
+              if (err === null) {
+                for(var key in obj) {
+                  if (obj.hasOwnProperty(key) &&
+                      key !== 'exiftool version number' &&
+                      key !== 'file name' &&
+                      key !== 'directory' &&
+                      key !== 'file inode change date time' &&
+                      key !== 'file modification date time' &&
+                      key !== 'file access date time' &&
+                      key !== 'file permissions') {
+                      exifData += ucwords(key) + ': ' + obj[key] + '<br>';
+                  }
                 }
+              } else {
+                exifData = err;
               }
-            } else {
-              exifData = err;
-            }
-            shredfile.shred('./tmp/' + md5(image.url), function(err, file) {
+              shredfile.shred('./tmp/' + md5(image.url), function(err, file) {
 
+              });
+              results.innerHTML = '<h3>' + resultsCount + ' Results</h3>';
+              // Let's pretend I never wrote this...
+              /* jshint maxlen: false */
+              imagesDiv.innerHTML += '<div class="thumbnail"><img id="' + md5(image.url) + '" src="' + image.url + '" onclick="showExifData(\'' + window.btoa(unescape(encodeURIComponent(exifData))) + '\')" oncontextmenu="showContextMenu(\'' + image.url + '\', \'' + image.from + '\')"><br><br></div>';
+              eorBreak.className = '';
+              endOfResults.className = 'lead text-center text-muted';
             });
-            results.innerHTML = '<h3>' + resultsCount + ' Results</h3>';
-            // Let's pretend I never wrote this...
-            /* jshint maxlen: false */
-            imagesDiv.innerHTML += '<div class="thumbnail"><img id="' + md5(image.url) + '" src="' + image.url + '" onclick="showExifData(\'' + window.btoa(unescape(encodeURIComponent(exifData))) + '\')" oncontextmenu="showContextMenu(\'' + image.url + '\', \'' + image.from + '\')"><br><br></div>';
-            eorBreak.className = '';
-            endOfResults.className = 'lead text-center text-muted';
           });
         });
-      });
       } else {
         eorBreak.className = 'hidden';
         endOfResults.className = 'lead text-center text-muted hidden';
