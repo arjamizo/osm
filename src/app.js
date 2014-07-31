@@ -136,7 +136,6 @@ function showContextMenu(url, from) {
     });
 
   // TODO: Shred images.
-  // TODO: Show confidence?
   var genderAgeItem = new gui.MenuItem(
     { label: 'Age/Gender (Experimental)',
       click: function() {
