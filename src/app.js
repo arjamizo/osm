@@ -125,8 +125,6 @@ function showContextMenu(url, from) {
   var menu = new gui.Menu();
   var clipboard = gui.Clipboard.get();
 
-  // TODO:
-  // Increase/decrease brightness?
   // FIXME: Cannot rotate image if flipped.
 
   var flipImageItem = new gui.MenuItem(
