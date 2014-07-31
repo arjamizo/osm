@@ -3,14 +3,6 @@ var shredfile = require('shredfile')({});
 var mkdirp = require('mkdirp');
 var checkInterval;
 
-mkdirp('./tmp', function(err) {
-  if (err) {
-    alert('Error creating temporary directory: ' + err);
-  }
-});
-
-// Uhh... This doesn't seem to work unless I create the ./tmp/ directory
-// above. What's up with that? FIXME?
 mkdirp('./tmp/br', function(err) {
   if (err) {
     alert('Error creating temporary directory: ' + err);
@@ -44,6 +36,11 @@ window.onload = function() {
   var originalCount = 0;
   var fileCount = 0;
   fs.readdir('./tmp/', function(err, files) {
+    // On first run the ./tmp/ directory won't exist.
+    if(typeof(files) === 'undefined') {
+      window.location = 'main.html';
+      return;
+    }
     originalCount = Object.keys(files).length;
     fileCount = Object.keys(files).length;
     if (err) {
