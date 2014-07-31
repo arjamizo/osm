@@ -235,9 +235,6 @@ function showContextMenu(url, from) {
   menu.append(new gui.MenuItem({ type: 'separator' }));
   menu.append(copyImageUrlItem);
   menu.append(copyPageUrlItem);
-  // TODO: Implement these functions.
-  menu.append(new gui.MenuItem({ label: 'Save Image' }));
-  menu.append(new gui.MenuItem({ label: 'Save Exif Data' }));
   menu.popup(x, y);
 }
 
