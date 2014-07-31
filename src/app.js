@@ -8,7 +8,6 @@ var gui = require('nw.gui');
 var exec = require('child_process').exec;
 var csv = require('csv-to-json');
 
-// TODO: Working settings page
 // TODO: Fork google-images
 // TODO: Check for internet availability.
 
