@@ -39,8 +39,6 @@ function imageSearch(query) {
           image.url = image.url.replace('b.jpg', '.jpg');
         }
 
-        // TODO: Prevent duplicate images.
-
         resultsCount++;
         var file = fs.createWriteStream('./tmp/' + md5(image.url));
         var req = request({url: image.url, proxy: 'http://127.0.0.1:8118'});
