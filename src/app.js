@@ -38,7 +38,7 @@ function imageSearch(query) {
 
         resultsCount++;
         var file = fs.createWriteStream('./tmp/' + md5(image.url));
-        var req = request({url: image.url, proxy: 'http://127.0.0.1:8118'});
+        var req = request({url: image.url, proxy: getSetting('proxy')});
         req.pipe(file);
 
         req.on('end', function() {
@@ -140,7 +140,7 @@ function showContextMenu(url, from) {
     { label: 'Age/Gender (Experimental)',
       click: function() {
         var file = fs.createWriteStream('./tmp/br/' + md5(url) + '.image');
-        var req = request({url: url, proxy: 'http://127.0.0.1:8118'});
+        var req = request({url: url, proxy: getSetting('proxy')});
         req.pipe(file);
 
         req.on('end', function() {
@@ -237,6 +237,23 @@ function showContextMenu(url, from) {
   menu.popup(x, y);
 }
 
+function getSetting(name) {
+  var defaultSettings = {
+    'proxy': '',
+    'deletion': 'shred-images'
+  };
+
+  if(localStorage.getItem(name)) {
+    return localStorage.getItem(name);
+  } else {
+    return defaultSettings[name];
+  }
+}
+
+function saveSetting(name, value) {
+  localStorage.setItem(name, value);
+}
+
 function readMouseMove(e) {
   x = e.clientX;
   y = e.clientY;
@@ -262,6 +279,8 @@ $(document).ready(function() {
   });
 
   $('a[href="#settings"]').click(function() {
+    $('#' + getSetting('deletion')).prop('checked', true);
+    $('#http-proxy').val(getSetting('proxy'));
     $('#settings-modal').modal('show');
     return false;
   });
@@ -274,6 +293,20 @@ $(document).ready(function() {
   $('#eor').click(function() {
     $('html, body').animate({ scrollTop: 100 }, 'slow');
     return false;
+  });
+
+  $('#save-settings').click(function() {
+    if($('#keep-images').is(':checked')) {
+      saveSetting('deletion', 'keep-images');
+    } else if($('#delete-images').is(':checked')) {
+      saveSetting('deletion', 'delete-images');
+    } else if($('#shred-images').is(':checked')) {
+      saveSetting('deletion', 'shred-images');
+    }
+
+    saveSetting('proxy', $('#http-proxy').val());
+
+    $('#settings-modal').modal('hide');
   });
 
   $('#search-form').on('submit', function() {
