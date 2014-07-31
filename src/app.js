@@ -34,7 +34,6 @@ function imageSearch(query) {
       images.forEach(function(image) {
         // NOTE: This is a little hack I implemented to replace imgur
         // thumbnails with the full image.
-        // TODO: Make this optional?
         if (image.url.substring(0, 19) === 'http://i.imgur.com/') {
           image.url = image.url.replace('b.jpg', '.jpg');
         }
