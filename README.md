@@ -5,6 +5,21 @@ Open Source Media (or OSM) is an advanced OSINT desktop application. It allows y
 
 **This software is currently unstable and probably doesn't work outside of my workstation.**
 
+Screenshots
+=======
+
+Main Page
+-------
+![main](https://cloud.githubusercontent.com/assets/973100/3760514/208d436a-1879-11e4-9626-886b26347cdb.png)
+
+Search
+-------
+![search](https://cloud.githubusercontent.com/assets/973100/3760521/4a41b13c-1879-11e4-8b30-12013ff54279.png)
+
+Settings
+-------
+![settings](https://cloud.githubusercontent.com/assets/973100/3760524/53a8a2b2-1879-11e4-8363-2608e770f77e.png)
+
 Installation
 =======
 
