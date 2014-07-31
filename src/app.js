@@ -271,6 +271,10 @@ $(document).ready(function() {
     }
   };
 
+  if (getSetting('proxy') === '') {
+    $('#no-proxy-warning').removeClass('hidden');
+  }
+
   // We need to reset the age and gender otherwise we're left with
   // stale data.
   $('#age-gender-modal').on('hidden.bs.modal', function () {
@@ -305,6 +309,12 @@ $(document).ready(function() {
     }
 
     saveSetting('proxy', $('#http-proxy').val());
+
+    if (getSetting('proxy') === '') {
+      $('#no-proxy-warning').removeClass('hidden');
+    } else {
+      $('#no-proxy-warning').addClass('hidden');
+    }
 
     $('#settings-modal').modal('hide');
   });
