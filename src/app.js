@@ -7,6 +7,8 @@ var shredfile = require('shredfile')({});
 var gui = require('nw.gui');
 var exec = require('child_process').exec;
 var csv = require('csv-to-json');
+var http = require('http');
+var url = require('url');
 
 // Mouse positions; see readMouseMove().
 var x;
@@ -64,9 +66,17 @@ function imageSearch(query) {
 
               });
               results.innerHTML = '<h3>' + resultsCount + ' Results</h3>';
+
+              // If we don't have a proxy setup there's no point in trying to
+              // proxy the image.
+              var src = 'http://127.0.0.1:' + getSetting('local-proxy-port');
+              if(getSetting('proxy') === '') {
+                src = image.url;
+              }
+
               // Let's pretend I never wrote this...
               /* jshint maxlen: false */
-              imagesDiv.innerHTML += '<div class="thumbnail"><img id="' + md5(image.url) + '" src="' + image.url + '" onclick="showExifData(\'' + window.btoa(unescape(encodeURIComponent(exifData))) + '\')" oncontextmenu="showContextMenu(\'' + image.url + '\', \'' + image.from + '\')"><br><br></div>';
+              imagesDiv.innerHTML += '<div class="thumbnail"><img id="' + md5(image.url) + '" src="' + src + '/get?url=' + image.url + '" onclick="showExifData(\'' + window.btoa(unescape(encodeURIComponent(exifData))) + '\')" oncontextmenu="showContextMenu(\'' + image.url + '\', \'' + image.from + '\')"><br><br></div>';
               eorBreak.className = '';
               endOfResults.className = 'lead text-center text-muted';
             });
@@ -240,6 +250,7 @@ function showContextMenu(url, from) {
 function getSetting(name) {
   var defaultSettings = {
     'proxy': '',
+    'local-proxy-port': '',
     'deletion': 'shred-images'
   };
 
@@ -271,6 +282,21 @@ $(document).ready(function() {
     }
   };
 
+  http.createServer(function(req, resp) {
+    if (req.url.substring(0, 9) === '/get?url=') {
+      if (req.method === 'GET') {
+        var imageUrl = url.parse(req.url, true);
+        if(imageUrl.query.url === '') {
+          resp.writeHead(200, {'Content-Type': 'text/plain'});
+          resp.end('EMPTY');
+          return;
+        }
+        request({url: imageUrl.query.url, proxy: getSetting('proxy')})
+        .pipe(resp);
+      }
+    }
+  }).listen(getSetting('local-proxy-port'));
+
   if (getSetting('proxy') === '') {
     $('#no-proxy-warning').removeClass('hidden');
   }
@@ -285,6 +311,7 @@ $(document).ready(function() {
   $('a[href="#settings"]').click(function() {
     $('#' + getSetting('deletion')).prop('checked', true);
     $('#http-proxy').val(getSetting('proxy'));
+    $('#local-proxy-port').val(getSetting('local-proxy-port'));
     $('#settings-modal').modal('show');
     return false;
   });
@@ -300,6 +327,17 @@ $(document).ready(function() {
   });
 
   $('#save-settings').click(function() {
+
+    if($('#http-proxy').val() !== '' && $('#local-proxy-port').val() === '') {
+      alert('You must specify an unused local port to use a proxy.');
+      return false;
+    }
+
+    if($('#local-proxy-port').val() !== getSetting('local-proxy-port')) {
+      alert('You must restart Open Source Media for these changes to take ' +
+            'effect.');
+    }
+
     if($('#keep-images').is(':checked')) {
       saveSetting('deletion', 'keep-images');
     } else if($('#delete-images').is(':checked')) {
@@ -307,6 +345,8 @@ $(document).ready(function() {
     } else if($('#shred-images').is(':checked')) {
       saveSetting('deletion', 'shred-images');
     }
+
+    saveSetting('local-proxy-port', $('#local-proxy-port').val());
 
     saveSetting('proxy', $('#http-proxy').val());
 
