@@ -8,7 +8,8 @@ var gui = require('nw.gui');
 var exec = require('child_process').exec;
 var csv = require('csv-to-json');
 var http = require('http');
-var url = require('url');
+var urlHelper = require('url');
+var fdialogs = require('node-webkit-fdialogs');
 
 // Mouse positions; see readMouseMove().
 var x;
@@ -249,6 +250,27 @@ function showContextMenu(url, from) {
       }
     });
 
+  var saveImageItem = new gui.MenuItem(
+    { label: 'Save Image',
+      click: function() {
+        var imageData = '';
+        var req = request({url: url, proxy: getSetting('proxy'), encoding: 'binary'}, function(error, response, body) {
+          var content = new Buffer(body, 'binary');
+
+          // Split up the path and grab the original file name
+          var imageUrl = urlHelper.parse(url);
+          var splitUrl = imageUrl.path.split('/');
+          var fileName = splitUrl[splitUrl.length-1];
+
+          fdialogs.saveFile(content, fileName, function (err, path) {
+              if(err) {
+                alert('Could not save image. Reason: ' + err);
+              }
+          });
+        });
+      }
+    });
+
   // It's my party and I'll cry if I want to.
   menu.append(viewFullImageItem);
   menu.append(previewPageItem);
@@ -260,6 +282,7 @@ function showContextMenu(url, from) {
   menu.append(new gui.MenuItem({ type: 'separator' }));
   menu.append(copyImageUrlItem);
   menu.append(copyPageUrlItem);
+  menu.append(saveImageItem);
   menu.popup(x, y);
 }
 
@@ -301,7 +324,7 @@ $(document).ready(function() {
   http.createServer(function(req, resp) {
     if (req.url.substring(0, 9) === '/get?url=') {
       if (req.method === 'GET') {
-        var imageUrl = url.parse(req.url, true);
+        var imageUrl = urlHelper.parse(req.url, true);
         if(imageUrl.query.url === '') {
           resp.writeHead(200, {'Content-Type': 'text/plain'});
           resp.end('EMPTY');
