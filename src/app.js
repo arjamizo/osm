@@ -11,6 +11,10 @@ var http = require('http');
 var urlHelper = require('url');
 var fdialogs = require('node-webkit-fdialogs');
 
+var packageJsonFile = fs.readFileSync('package.json');
+packageJson = JSON.parse(packageJsonFile);
+useragent = packageJson['user-agent'];
+
 // Mouse positions; see readMouseMove().
 var x;
 var y;
@@ -41,7 +45,7 @@ function imageSearch(query) {
 
           resultsCount++;
           var file = fs.createWriteStream('./tmp/' + md5(image.url));
-          var req = request({url: image.url, proxy: getSetting('proxy')});
+          var req = request({url: image.url, proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }});
           req.pipe(file);
 
           req.on('end', function() {
@@ -152,7 +156,7 @@ function showContextMenu(url, from) {
     { label: 'Age/Gender (Experimental)',
       click: function() {
         var file = fs.createWriteStream('./tmp/br/' + md5(url) + '.image');
-        var req = request({url: url, proxy: getSetting('proxy')});
+        var req = request({url: url, proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }});
         req.pipe(file);
 
         req.on('end', function() {
@@ -254,7 +258,7 @@ function showContextMenu(url, from) {
     { label: 'Save Image',
       click: function() {
         var imageData = '';
-        var req = request({url: url, proxy: getSetting('proxy'), encoding: 'binary'}, function(error, response, body) {
+        var req = request({url: url, proxy: getSetting('proxy'), encoding: 'binary', headers: { 'User-Agent': useragent }}, function(error, response, body) {
           var content = new Buffer(body, 'binary');
 
           // Split up the path and grab the original file name
@@ -330,7 +334,7 @@ $(document).ready(function() {
           resp.end('EMPTY');
           return;
         }
-        request({url: imageUrl.query.url, proxy: getSetting('proxy')})
+        request({url: imageUrl.query.url, proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }})
         .pipe(resp);
       }
     }
