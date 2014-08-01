@@ -195,6 +195,20 @@ function showContextMenu(url, from) {
       }
     });
 
+  var viewFullImageItem = new gui.MenuItem(
+    { label: 'View Full Image',
+      click: function() {
+        var src = 'http://127.0.0.1:' + getSetting('local-proxy-port') +
+          '/get?url=' + url;
+        if(getSetting('proxy') === '') {
+          src = url;
+        }
+
+        var pwin = open('private.html');
+        pwin.document.write('<img src="' + src + '">');
+      }
+    });
+
   var previewPageItem = new gui.MenuItem(
     { label: 'Preview Page (No Proxy)',
       click: function() {
@@ -236,6 +250,7 @@ function showContextMenu(url, from) {
     });
 
   // It's my party and I'll cry if I want to.
+  menu.append(viewFullImageItem);
   menu.append(previewPageItem);
   menu.append(new gui.MenuItem({ type: 'separator' }));
   menu.append(rotateLeftItem);
