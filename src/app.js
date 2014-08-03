@@ -45,7 +45,7 @@ function imageSearch(query) {
 
           resultsCount++;
           var file = fs.createWriteStream('./tmp/' + md5(image.url));
-          var req = request({url: image.url, proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }});
+          var req = request({url: decodeURIComponent(image.url), proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }});
           req.pipe(file);
 
           req.on('end', function() {
@@ -155,7 +155,7 @@ function showContextMenu(url, from) {
     { label: 'Age/Gender (Experimental)',
       click: function() {
         var file = fs.createWriteStream('./tmp/br/' + md5(url) + '.image');
-        var req = request({url: url, proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }});
+        var req = request({url: decodeURIComponent(url), proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }});
         req.pipe(file);
 
         req.on('end', function() {
@@ -241,14 +241,14 @@ function showContextMenu(url, from) {
   var copyImageUrlItem = new gui.MenuItem(
     { label: 'Copy Image URL',
       click: function() {
-        clipboard.set(url, 'text');
+        clipboard.set(decodeURIComponent(url), 'text');
       }
     });
 
   var copyPageUrlItem = new gui.MenuItem(
     { label: 'Copy Page URL',
       click: function() {
-        clipboard.set(from, 'text');
+        clipboard.set(decodeURIComponent(from), 'text');
       }
     });
 
@@ -256,7 +256,7 @@ function showContextMenu(url, from) {
     { label: 'Save Image',
       click: function() {
         var imageData = '';
-        var req = request({url: url, proxy: getSetting('proxy'), encoding: 'binary', headers: { 'User-Agent': useragent }}, function(error, response, body) {
+        var req = request({url: decodeURIComponent(url), proxy: getSetting('proxy'), encoding: 'binary', headers: { 'User-Agent': useragent }}, function(error, response, body) {
           var content = new Buffer(body, 'binary');
 
           // Split up the path and grab the original file name
@@ -337,7 +337,7 @@ $(document).ready(function() {
           resp.end('EMPTY');
           return;
         }
-        request({url: imageUrl.query.url, proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }})
+        request({url: decodeURIComponent(imageUrl.query.url), proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }})
         .pipe(resp);
       }
     }
