@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
     <title>Open Source Media</title>
     <link rel="stylesheet" href="css/bootstrap.css">
     <style>
@@ -36,7 +37,7 @@
   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" type="button">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -45,11 +46,11 @@
         <a class="navbar-brand" href="#top">Open Source Media</a>
       </div>
       <div class="collapse navbar-collapse">
-        <form class="navbar-form navbar-left" role="search" id="search-form">
+        <form class="navbar-form navbar-left" id="search-form" role="search">
           <div class="form-group">
-            <input type="text" class="form-control" id="query" placeholder="Enter keywords...">
+            <input class="form-control" id="query" type="text" placeholder="Enter keywords...">
           </div>
-          <button type="submit" class="btn btn-default">Search</button>
+          <button class="btn btn-default" type="submit">Search</button>
         </form>
         <ul class="nav navbar-nav pull-right">
           <li><a href="#settings">Settings</a></li>
@@ -59,28 +60,28 @@
     </div>
   </div>
 
-  <div id="no-proxy-warning" class="alert alert-danger alert-dismissible hidden" role="alert">
-    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+  <div class="alert alert-danger alert-dismissible hidden" id="no-proxy-warning" role="alert">
+    <button class="close" data-dismiss="alert" type="button"><span>&times;</span></button>
     <strong>Take note</strong> that you do not have a proxy configured. Your ISP, employer, and website owners <strong>will</strong> be able to see your IP address.
   </div>
   <div class="container">
-    <div id="results" class="page-header hidden"></div>
+    <div class="page-header hidden" id="results"></div>
     <div id="images"></div>
-    <hr id="eor-break" class="hidden">
-    <p id="eor" class="lead text-center text-muted hidden">End of Results.</p>
+    <hr class="hidden" id="eor-break">
+    <p class="lead text-center text-muted hidden" id="eor">End of Results.</p>
   </div>
   <div class="modal fade" id="exif-data-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"><span>&times;</span><span class="sr-only">Close</span></button>
+          <button class="close" data-dismiss="modal" type="button"><span>&times;</span><span class="sr-only">Close</span></button>
           <h4 class="modal-title" id="exif-title">Exif Data</h4>
         </div>
         <div class="modal-body" id="exif-data">
           (None)
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          <button class="btn btn-primary" data-dismiss="modal" type="button">Close</button>
         </div>
       </div>
     </div>
@@ -90,42 +91,42 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"><span>&times;</span><span class="sr-only">Close</span></button>
+          <button class="close" data-dismiss="modal" type="button"><span>&times;</span><span class="sr-only">Close</span></button>
           <h4 class="modal-title" id="settings-title">Settings</h4>
         </div>
         <div class="modal-body" id="settings">
           <form role="form">
             <div class="form-group">
               <label for="http-proxy">HTTP Proxy</label>
-              <input type="text" class="form-control" id="http-proxy" placeholder="http://myproxy:8080">
+              <input class="form-control" id="http-proxy" type="text" placeholder="http://myproxy:8080">
             </div>
             <div class="form-group">
               <label for="http-proxy">Local Proxy Port</label>
-              <input type="text" class="form-control" id="local-proxy-port" placeholder="48030">
+              <input class="form-control" id="local-proxy-port" type="text" placeholder="48030">
             </div>
             <div class="radio">
               <label>
-                <input type="radio" id="keep-images" name="deletion">
+                <input id="keep-images" type="radio" name="deletion">
                 Keep images
               </label>
             </div>
             <div class="radio">
               <label>
-                <input type="radio" id="delete-images" name="deletion">
+                <input id="delete-images" type="radio" name="deletion">
                 Delete images
               </label>
             </div>
             <div class="radio">
               <label>
-                <input type="radio" id="shred-images" name="deletion" checked>
+                <input id="shred-images" name="deletion" type="radio" checked>
                 Securely delete images
               </label>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" id="save-settings" class="btn btn-primary">Save</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button class="btn btn-primary" id="save-settings" type="button">Save</button>
+          <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
         </div>
       </div>
     </div>
@@ -135,14 +136,14 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"><span>&times;</span><span class="sr-only">Close</span></button>
+          <button class="close" data-dismiss="modal" type="button"><span>&times;</span><span class="sr-only">Close</span></button>
           <h4 class="modal-title" id="facial-title">Facial Analysis</h4>
         </div>
         <div class="modal-body" id="facial-data">
           <span id="age"><i>Waiting...</i></span> year old <span id="gender"><i>Waiting...</i></span>.
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          <button class="btn btn-primary" data-dismiss="modal" type="button">Close</button>
         </div>
       </div>
     </div>
