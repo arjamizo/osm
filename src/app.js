@@ -45,7 +45,7 @@ function imageSearch(query) {
 
           resultsCount++;
           var file = fs.createWriteStream('./tmp/' + md5(image.url));
-          var req = request({url: decodeURIComponent(image.url), proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }});
+          var req = request({url: safeDecodeURIComponent(image.url), proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }});
           req.pipe(file);
 
           req.on('end', function() {
@@ -158,7 +158,7 @@ function showContextMenu(url, from) {
     { label: 'Age/Gender (Experimental)',
       click: function() {
         var file = fs.createWriteStream('./tmp/br/' + md5(url) + '.image');
-        var req = request({url: decodeURIComponent(url), proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }});
+        var req = request({url: safeDecodeURIComponent(url), proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }});
         req.pipe(file);
 
         req.on('end', function() {
@@ -244,14 +244,14 @@ function showContextMenu(url, from) {
   var copyImageUrlItem = new gui.MenuItem(
     { label: 'Copy Image URL',
       click: function() {
-        clipboard.set(decodeURIComponent(url), 'text');
+        clipboard.set(safeDecodeURIComponent(url), 'text');
       }
     });
 
   var copyPageUrlItem = new gui.MenuItem(
     { label: 'Copy Page URL',
       click: function() {
-        clipboard.set(decodeURIComponent(from), 'text');
+        clipboard.set(safeDecodeURIComponent(from), 'text');
       }
     });
 
@@ -259,7 +259,7 @@ function showContextMenu(url, from) {
     { label: 'Save Image',
       click: function() {
         var imageData = '';
-        var req = request({url: decodeURIComponent(url), proxy: getSetting('proxy'), encoding: 'binary', headers: { 'User-Agent': useragent }}, function(error, response, body) {
+        var req = request({url: safeDecodeURIComponent(url), proxy: getSetting('proxy'), encoding: 'binary', headers: { 'User-Agent': useragent }}, function(error, response, body) {
           var content = new Buffer(body, 'binary');
           var fileName = getFileName(url);
 
@@ -310,6 +310,19 @@ function proxify_url(url) {
          '/get?url=' + url;
 }
 
+/**
+ * Takes a URL and decodes it, if possible. If it can't it returns the
+ * original URL.
+ * @param string url - The URL to decode.
+ */
+function safeDecodeURIComponent(url) {
+  try {
+    return decodeURIComponent(url);
+  } catch (ex) {
+    return url;
+  }
+}
+
 function getFileName(url) {
   // NOTE: I tried to get this to unescape the file name, but failed. Epicly.
   // If you know how to do this, feel free to submit a pull request.
@@ -344,7 +357,7 @@ $(document).ready(function() {
           resp.end('EMPTY');
           return;
         }
-        request({url: decodeURIComponent(imageUrl.query.url), proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }})
+        request({url: safeDecodeURIComponent(imageUrl.query.url), proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }})
         .pipe(resp);
       }
     }
