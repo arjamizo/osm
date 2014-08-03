@@ -462,6 +462,10 @@ $(document).ready(function() {
     $('#settings-modal').modal('hide');
   });
 
+  $('a[href="#help"]').click(function() {
+    gui.Shell.openExternal('https://github.com/nmalcolm/osm/blob/master/HELP.md');
+  });
+
   $('#search-form').on('submit', function() {
     $('#images').html('');
     imageSearch($('#query').val());
