@@ -32,7 +32,7 @@ function imageSearch(query) {
     // concerned about it at this time.
 
     /* jshint loopfunc: true */
-    googleImages.search(query, { page: i, callback: function(err, images) {
+    googleImages.search(query, { page: i, proxy: getSetting('proxy'), callback: function(err, images) {
       var resultsDiv = document.getElementById('results');
       if (images[0]) {
       results.className = 'page-header';
