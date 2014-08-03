@@ -81,7 +81,7 @@ function imageSearch(query) {
 
               // Let's pretend I never wrote this...
               /* jshint maxlen: false */
-              imagesDiv.innerHTML += '<div class="thumbnail"><img id="' + md5(image.url) + '" src="' + src + '" onclick="showExifData(\'' + window.btoa(unescape(encodeURIComponent(exifData))) + '\')" oncontextmenu="showContextMenu(\'' + image.url + '\', \'' + image.from + '\')"><br><br></div>';
+              imagesDiv.innerHTML += '<div class="thumbnail"><img id="' + md5(image.url) + '" src="' + src + '" title="' + getFileName(image.url) + '" onclick="showExifData(\'' + image.url + '\', \'' + window.btoa(unescape(encodeURIComponent(exifData))) + '\')" oncontextmenu="showContextMenu(\'' + image.url + '\', \'' + image.from + '\')"><br><br></div>';
               eorBreak.className = '';
               endOfResults.className = 'lead text-center text-muted';
             });
@@ -126,8 +126,11 @@ function getRotationDegrees(obj) {
   return (angle < 0) ? angle +=360 : angle;
 }
 
-function showExifData(data) {
+function showExifData(url, data) {
   var exifData = document.getElementById('exif-data');
+  var exifTitle = document.getElementById('exif-title');
+
+  exifTitle.innerHTML = getFileName(url);
   exifData.innerHTML = window.atob(data);
   $('#exif-data-modal').modal('show');
 }
@@ -258,11 +261,7 @@ function showContextMenu(url, from) {
         var imageData = '';
         var req = request({url: decodeURIComponent(url), proxy: getSetting('proxy'), encoding: 'binary', headers: { 'User-Agent': useragent }}, function(error, response, body) {
           var content = new Buffer(body, 'binary');
-
-          // Split up the path and grab the original file name
-          var imageUrl = urlHelper.parse(url);
-          var splitUrl = imageUrl.path.split('/');
-          var fileName = splitUrl[splitUrl.length-1];
+          var fileName = getFileName(url);
 
           fdialogs.saveFile(content, fileName, function (err, path) {
               if(err) {
@@ -309,6 +308,14 @@ function saveSetting(name, value) {
 function proxify_url(url) {
   return 'http://127.0.0.1:' + getSetting('local-proxy-port') +
          '/get?url=' + url;
+}
+
+function getFileName(url) {
+  // NOTE: I tried to get this to unescape the file name, but failed. Epicly.
+  // If you know how to do this, feel free to submit a pull request.
+  var parsedUrl = urlHelper.parse(url);
+  var splitUrl = parsedUrl.path.split('/');
+  return splitUrl[splitUrl.length-1];
 }
 
 function readMouseMove(e) {
