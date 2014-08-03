@@ -19,6 +19,10 @@ useragent = packageJson['user-agent'];
 var x;
 var y;
 
+/**
+ * Searches Google for images and appends the results to the page.
+ * @param string query - The query to search for.
+ */
 function imageSearch(query) {
   var resultsCount = 0;
   var imagesDiv = document.getElementById('images');
@@ -99,8 +103,8 @@ function imageSearch(query) {
 }
 
 /**
- * Uppercase Words
- * @param string str
+ * Takes a string and capitalizes the first letter of each word.0
+ * @param string str - The string to convert to uppercase.
  */
 function ucwords(str) {
     return (str + '').replace(/^([a-z])|\s+([a-z])/g, function($1) {
@@ -126,6 +130,11 @@ function getRotationDegrees(obj) {
   return (angle < 0) ? angle +=360 : angle;
 }
 
+/**
+ * Shows a modal containing the EXIF data of an image.
+ * @param string url - The URL where the image is located.
+ * @param string data - A base64 encoded string containing the EXIF data.
+ */
 function showExifData(url, data) {
   var exifData = document.getElementById('exif-data');
   var exifTitle = document.getElementById('exif-title');
@@ -135,6 +144,11 @@ function showExifData(url, data) {
   $('#exif-data-modal').modal('show');
 }
 
+/**
+ * Shows a context menu when right clicking on an image.
+ * @param string url - The URL where the image is located.
+ * @param string data - The URL of the page it came from.
+ */
 function showContextMenu(url, from) {
   // TODO: Reduce the amount of statements. Yeah, this is a pile of fuck.
   /* jshint maxstatements:25 */
@@ -287,6 +301,10 @@ function showContextMenu(url, from) {
   menu.popup(x, y);
 }
 
+/**
+ * Retrieves a setting from the browser's local storage
+ * @param string name - The name of the setting.
+ */
 function getSetting(name) {
   var defaultSettings = {
     'proxy': '',
@@ -301,10 +319,20 @@ function getSetting(name) {
   }
 }
 
+/**
+ * Saves a setting (either creating or modifying) in the browser's local
+ * storage.
+ * @param string name - The name of the setting.
+ * @param string value - The value of the setting.
+ */
 function saveSetting(name, value) {
   localStorage.setItem(name, value);
 }
 
+/**
+ * Allows a URL to be accessed over a user configurable proxy server.
+ * @param string url - The URL to proxy.
+ */
 function proxify_url(url) {
   return 'http://127.0.0.1:' + getSetting('local-proxy-port') +
          '/get?url=' + url;
@@ -323,6 +351,11 @@ function safeDecodeURIComponent(url) {
   }
 }
 
+/**
+ * Takes a URL and parses the file name out of it. Example:
+ * http://www.example.com/images/logo.png -> logo.png
+ * @param string url - The URL to parse.
+ */
 function getFileName(url) {
   // NOTE: I tried to get this to unescape the file name, but failed. Epicly.
   // If you know how to do this, feel free to submit a pull request.
@@ -331,6 +364,10 @@ function getFileName(url) {
   return splitUrl[splitUrl.length-1];
 }
 
+/**
+ * Tracks the cursor's position and stores the location.
+ * @param event e - The event to on which it's triggered.
+ */
 function readMouseMove(e) {
   x = e.clientX;
   y = e.clientY;

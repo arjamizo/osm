@@ -9,12 +9,22 @@ mkdirp('./tmp/br', function(err) {
   }
 });
 
+/**
+ * Calcuates a percentage given two numbers. Example:
+ * percentage(100, 50) = 50%
+ * @param int top - The maximum possible value
+ * @param string data - The current value (must be less than `top`)
+ */
 function percentage(top, current) {
   return ((top - current) / (top)) * 100;
 }
 
 // TODO: Delete any files from ./tmp/br/
 
+/**
+ * Checks whether there are any files remaining in ./tmp and redirects to
+ * main.html if there aren't.
+ */
 function checkForFiles() {
   // According to the NodeJS documentation, "readdirSync ... Returns an array
   // of filenames excluding '.' and '..'". A file and a directory are not the
