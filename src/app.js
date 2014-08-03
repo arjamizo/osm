@@ -74,8 +74,7 @@ function imageSearch(query) {
 
               // If we don't have a proxy setup there's no point in trying to
               // proxy the image.
-              var src = 'http://127.0.0.1:' + getSetting('local-proxy-port') +
-                '/get?url=' + image.url;
+              var src = proxify_url(image.url);
               if(getSetting('proxy') === '') {
                 src = image.url;
               }
@@ -203,8 +202,7 @@ function showContextMenu(url, from) {
   var viewFullImageItem = new gui.MenuItem(
     { label: 'View Full Image',
       click: function() {
-        var src = 'http://127.0.0.1:' + getSetting('local-proxy-port') +
-          '/get?url=' + url;
+        var src = proxify_url(url);
         if(getSetting('proxy') === '') {
           src = url;
         }
@@ -306,6 +304,11 @@ function getSetting(name) {
 
 function saveSetting(name, value) {
   localStorage.setItem(name, value);
+}
+
+function proxify_url(url) {
+  return 'http://127.0.0.1:' + getSetting('local-proxy-port') +
+         '/get?url=' + url;
 }
 
 function readMouseMove(e) {
