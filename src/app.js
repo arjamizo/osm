@@ -288,7 +288,7 @@ function showContextMenu(url, from) {
                         encoding: 'binary',
                         headers: { 'User-Agent': useragent } };
 
-        var req = request(options, function(error, response, body) {
+        request(options, function(error, response, body) {
           var content = new Buffer(body, 'binary');
           var fileName = getFileName(url);
 
