@@ -25,7 +25,7 @@ OSM is available in both binary and source form.
 
 Binaries are available for Windows, Mac, and Linux and can be downloaded here: https://github.com/nmalcolm/osm/releases
 
-The source is available at https://github.com/nmalcolm/osm. See `HACKING` for more information. If you are unsure what to do with this, you may prefer to use a pre-built binary instead.
+The source is available at https://github.com/nmalcolm/osm. See `HACKING.md` for more information. If you are unsure what to do with this, you may prefer to use a pre-built binary instead.
 
 No installation is needed. You only need to run OSM and the rest will be taken care for you.
 
