@@ -47,9 +47,13 @@ function imageSearch(query) {
             image.url = image.url.replace('b.jpg', '.jpg');
           }
 
+          var options = { url: safeDecodeURIComponent(image.url),
+                          proxy: getSetting('proxy'),
+                          headers: { 'User-Agent': useragent } };
+
           resultsCount++;
           var file = fs.createWriteStream('./tmp/' + md5(image.url));
-          var req = request({url: safeDecodeURIComponent(image.url), proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }});
+          var req = request(options);
           req.pipe(file);
 
           req.on('end', function() {
@@ -78,7 +82,7 @@ function imageSearch(query) {
 
               // If we don't have a proxy setup there's no point in trying to
               // proxy the image.
-              var src = proxify_url(image.url);
+              var src = proxifyUrl(image.url);
               if(getSetting('proxy') === '') {
                 src = image.url;
               }
@@ -172,7 +176,12 @@ function showContextMenu(url, from) {
     { label: 'Age/Gender (Experimental)',
       click: function() {
         var file = fs.createWriteStream('./tmp/br/' + md5(url) + '.image');
-        var req = request({url: safeDecodeURIComponent(url), proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }});
+
+        var options = { url: safeDecodeURIComponent(url),
+                        proxy: getSetting('proxy'),
+                        headers: { 'User-Agent': useragent } };
+
+        var req = request(options);
         req.pipe(file);
 
         req.on('end', function() {
@@ -219,7 +228,7 @@ function showContextMenu(url, from) {
   var viewFullImageItem = new gui.MenuItem(
     { label: 'View Full Image',
       click: function() {
-        var src = proxify_url(url);
+        var src = proxifyUrl(url);
         if(getSetting('proxy') === '') {
           src = url;
         }
@@ -273,7 +282,13 @@ function showContextMenu(url, from) {
     { label: 'Save Image',
       click: function() {
         var imageData = '';
-        var req = request({url: safeDecodeURIComponent(url), proxy: getSetting('proxy'), encoding: 'binary', headers: { 'User-Agent': useragent }}, function(error, response, body) {
+
+        var options = { url: safeDecodeURIComponent(url),
+                        proxy: getSetting('proxy'),
+                        encoding: 'binary',
+                        headers: { 'User-Agent': useragent } };
+
+        var req = request(options, function(error, response, body) {
           var content = new Buffer(body, 'binary');
           var fileName = getFileName(url);
 
@@ -333,7 +348,7 @@ function saveSetting(name, value) {
  * Allows a URL to be accessed over a user configurable proxy server.
  * @param string url - The URL to proxy.
  */
-function proxify_url(url) {
+function proxifyUrl(url) {
   return 'http://127.0.0.1:' + getSetting('local-proxy-port') +
          '/get?url=' + url;
 }
@@ -394,7 +409,12 @@ $(document).ready(function() {
           resp.end('EMPTY');
           return;
         }
-        request({url: safeDecodeURIComponent(imageUrl.query.url), proxy: getSetting('proxy'), headers: { 'User-Agent': useragent }})
+
+        var options = { url: safeDecodeURIComponent(imageUrl.query.url),
+                        proxy: getSetting('proxy'),
+                        headers: { 'User-Agent': useragent } };
+
+        request(options);
         .pipe(resp);
       }
     }
@@ -463,7 +483,7 @@ $(document).ready(function() {
   });
 
   $('a[href="#help"]').click(function() {
-    gui.Shell.openExternal('https://github.com/nmalcolm/osm/blob/master/HELP.md');
+    gui.Shell.openExternal('http://git.io/B-r8LA');
   });
 
   $('#search-form').on('submit', function() {
