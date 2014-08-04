@@ -414,8 +414,7 @@ $(document).ready(function() {
                         proxy: getSetting('proxy'),
                         headers: { 'User-Agent': useragent } };
 
-        request(options);
-        .pipe(resp);
+        request(options).pipe(resp);
       }
     }
   }).listen(getSetting('local-proxy-port'));
