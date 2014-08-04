@@ -405,7 +405,7 @@ $(document).ready(function() {
       if (req.method === 'GET') {
         var imageUrl = urlHelper.parse(req.url, true);
         if(imageUrl.query.url === '') {
-          resp.writeHead(200, {'Content-Type': 'text/plain'});
+          resp.writeHead(200, { 'Content-Type': 'text/plain' });
           resp.end('EMPTY');
           return;
         }
