@@ -7,24 +7,22 @@
     <style>
     body {
       padding-top: 50px;
-      user-select: none;
-      -webkit-user-select: none;
-      cursor: default;
     }
 
-    label, div[class="thumbnail"] {
+    label,
+    div[class="thumbnail"] {
       cursor: pointer;
     }
 
-    #exif-data, #facial-data {
-      user-select: text;
-      -webkit-user-select: text;
+    #exif-data,
+    #facial-data {
       cursor: text;
+      user-select: text;
     }
 
     .flipped {
-      transform: scale(-1, 1);
       -webkit-transform: scale(-1, 1);
+              transform: scale(-1, 1);
     }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

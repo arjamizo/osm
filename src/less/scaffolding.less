@@ -30,6 +30,11 @@ body {
   line-height: @line-height-base;
   color: @text-color;
   background-color: @body-bg;
+
+  // These custom rules make sure we have a default arrow cursor and
+  // non-selectable text for a more native application feel.
+  cursor: default;
+  user-select: none;
 }
 
 // Reset fonts for relevant elements
