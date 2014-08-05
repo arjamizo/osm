@@ -10,6 +10,7 @@ var csv = require('csv-to-json');
 var http = require('http');
 var urlHelper = require('url');
 var fdialogs = require('node-webkit-fdialogs');
+var validator = require('validator');
 
 var packageJsonFile = fs.readFileSync('package.json');
 packageJson = JSON.parse(packageJsonFile);
@@ -31,7 +32,7 @@ function imageSearch(query) {
 
   // The deprecated Google Images API only allows us to recieve a maximum
   // of 60 results.
-  for (var i = 0; i < 57; i = i +4) {
+  for (var i = 0; i < 57; i = i + 4) {
     // NOTE: Eventually this should be refactored, but I'm not overly
     // concerned about it at this time.
 
@@ -414,9 +415,15 @@ $(document).ready(function() {
     if (req.url.substring(0, 9) === '/get?url=') {
       if (req.method === 'GET') {
         var imageUrl = urlHelper.parse(req.url, true);
-        if(imageUrl.query.url === '') {
+
+        /* jshint camelcase: false */
+        var validatorOptions = { protocols: ['http','https'],
+                                 require_tld: true,
+                                 require_protocol: true };
+
+        if(validator.isURL(imageUrl.query.url, validatorOptions) === false) {
           resp.writeHead(200, { 'Content-Type': 'text/plain' });
-          resp.end('EMPTY');
+          resp.end('BADURL');
           return;
         }
 
