@@ -39,7 +39,12 @@ function imageSearch(query) {
     googleImages.search(query, { page: i, proxy: getSetting('proxy'), callback: function(err, images) {
       var resultsDiv = document.getElementById('results');
       if (images[0]) {
-      results.className = 'page-header';
+        results.className = 'page-header';
+
+        // Until we have some results, just show 0. Better than nothing, right?
+        if(resultsCount === 0) {
+          results.innerHTML = '<h3>0 Results</h3>';
+        }
         images.forEach(function(image) {
           // NOTE: This is a little hack I implemented to replace imgur
           // thumbnails with the full image.
