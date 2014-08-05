@@ -310,15 +310,14 @@ function showContextMenu(url, from) {
   // It's my party and I'll cry if I want to.
   menu.append(viewFullImageItem);
   menu.append(previewPageItem);
+  menu.append(copyImageUrlItem);
+  menu.append(copyPageUrlItem);
+  menu.append(saveImageItem);
   menu.append(new gui.MenuItem({ type: 'separator' }));
   menu.append(rotateLeftItem);
   menu.append(rotateRightItem);
   menu.append(flipImageItem);
   menu.append(genderAgeItem);
-  menu.append(new gui.MenuItem({ type: 'separator' }));
-  menu.append(copyImageUrlItem);
-  menu.append(copyPageUrlItem);
-  menu.append(saveImageItem);
   menu.popup(x, y);
 }
 
