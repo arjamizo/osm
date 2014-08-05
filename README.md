@@ -6,9 +6,9 @@ Open Source Media is an advanced OSINT desktop application. It allows you to sea
 Screenshots
 =======
 
-*Note: These screenshots are probably out of date. If you want to see OSM in action, please see below.*
+**Note: These screenshots are probably outdated. If you want to see OSM in action, please see below.**
 
-Main Page
+Main Application
 -------
 ![main](https://cloud.githubusercontent.com/assets/973100/3760514/208d436a-1879-11e4-9626-886b26347cdb.png)
 
