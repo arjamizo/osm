@@ -1,10 +1,12 @@
 Open Source Media
 =======
 
-Open Source Media (or OSM) is an advanced OSINT desktop application. It allows you to search Google anonymously, using Tor or any other HTTP proxy you wish, and provides you with resources to study, inspect and audit images. An example use for this application would be to find and study illegal content with the aim to help law enforcement track down criminal(s). In reality you can use this for many different purposes.
+Open Source Media is an advanced OSINT desktop application. It allows you to search Google anonymously, using Tor or any other HTTP proxy you wish, and provides you with resources to find, inspect and audit images. Uses include tracking down potentially illegal content which can be used to discover and help track down criminals, finding photos of specific people, and discovering new targets (e.g. an employee of a company). With Google's powerful search capabilities, Open Source Media can give you exactly what you need and lots which you don't.
 
 Screenshots
 =======
+
+*Note: These screenshots are probably out of date. If you want to see OSM in action, please see below.*
 
 Main Page
 -------
@@ -29,6 +31,16 @@ The source is available at https://github.com/nmalcolm/osm. See `HACKING.md` for
 
 No installation is needed. You only need to run OSM and the rest will be taken care for you.
 
+Hacking
+=======
+
+Please see `HACKING.md`.
+
+Help?
+=======
+
+Please see `HELP.md`.
+
 Facial Recognition
 =======
 
@@ -36,7 +48,7 @@ At this time, OSM provides a limited age and gender recognition feature using Op
 
 [0] http://openbiometrics.org/
 
-Legal Note
+License
 =======
 
-This software is not illegal, but using it may be. It depends on why you're using it and what you're using it for, and I take no responsibility for any crimes you may commit while using this software. I also don't guarantee this software is in any way secure or audited. In no way has this software been made intentionally insecure but that doesn't mean it isn't. Bugs exist and security vulnerabilities exist. You have been warned. Use at your own risk.
+Open Source Media is released, without warranty, under the The MIT License. Please see `LICENSE`.
