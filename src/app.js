@@ -56,6 +56,12 @@ function imageSearch(query) {
           var req = request(options);
           req.pipe(file);
 
+          req.on('error', function() {
+            // If we have an error, ignore it. This is temporary. I'll likely
+            // end up writing it to console or a log file, but these are things
+            // which usually are caused by strange servers doing strange things.
+          });
+
           req.on('end', function() {
             exif ('./tmp/' + md5(image.url), function(err, obj) {
               var exifData = '';
