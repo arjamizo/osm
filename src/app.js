@@ -40,6 +40,11 @@ function imageSearch(query) {
     /* jshint loopfunc: true */
     googleImages.search(query, { page: i, proxy: getSetting('proxy'), callback: function(err, images) {
       var resultsDiv = document.getElementById('results');
+
+      if (err) {
+        throwApplicationError('<p>Could not connect to Google\'s API server. Please make sure you have an internet connection and your network can connect to <code>ajax.googleapis.com</code>.</p><code>' + err + '</code>');
+      }
+
       if (images[0]) {
         results.className = 'page-header';
 
