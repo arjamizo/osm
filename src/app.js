@@ -63,10 +63,9 @@ function imageSearch(query) {
           var req = request(options);
           req.pipe(file);
 
-          req.on('error', function() {
-            // If we have an error, ignore it. This is temporary. I'll likely
-            // end up writing it to console or a log file, but these are things
-            // which usually are caused by strange servers doing strange things.
+          req.on('error', function(err) {
+            // If we have an error, log it to the console.
+            console.log('Web Request Error: ' + err);
           });
 
           req.on('end', function() {
@@ -86,7 +85,7 @@ function imageSearch(query) {
                   }
                 }
               } else {
-                exifData = err;
+                exifData = '<p>Extracting EXIF data failed. Please make sure exiftool is installed and available in PATH.</p><code>' + err + '</code>';
               }
               shredfile.shred('./tmp/' + md5(image.url), function(err, file) {
 
@@ -198,42 +197,47 @@ function showContextMenu(url, from) {
         req.pipe(file);
 
         req.on('end', function() {
-          exec('br -algorithm GenderEstimation -enroll ' + process.cwd() +
-               '/tmp/br/' + md5(url) + '.image ' + process.cwd() +
-               '/tmp/br/gender_' + md5(url) + '.csv', function(err, result) {
-            if (err) {
-              alert(err);
-              return;
-            }
-            var genderResult = csv.parse('./tmp/br/gender_' + md5(url) +
-                                         '.csv');
-
-            var gender = genderResult[0].Gender;
-            if (typeof(gender) === 'undefined') {
-              gender = 'Unknown';
-            }
-            var genderSpan = document.getElementById('gender');
-            genderSpan.innerHTML = gender;
-          });
-
-          exec('br -algorithm AgeEstimation -enroll ' + process.cwd() +
-               '/tmp/br/' + md5(url) + '.image ' + process.cwd() +
-               '/tmp/br/age_' + md5(url) + '.csv', function(err, result) {
-            if (err) {
-              alert(err);
-              return;
-            }
-            var ageResult = csv.parse('./tmp/br/age_' + md5(url) + '.csv');
-
-            var age = ageResult[0].Age;
-            var ageSpan = document.getElementById('age');
-            if (typeof(age) === 'undefined') {
-              ageSpan.innerHTML = 'Unknown';
+          isBinaryInstalled('br', function(result) {
+            if(result === false) {
+              throwApplicationError('OpenBR could not be found in PATH. Please make sure OpenBR is installed.');
             } else {
-              ageSpan.innerHTML = Math.round(age);
+              exec('br -algorithm GenderEstimation -enroll ' + process.cwd() +
+                   '/tmp/br/' + md5(url) + '.image ' + process.cwd() +
+                   '/tmp/br/gender_' + md5(url) + '.csv', function(err, result) {
+                if (err) {
+                  throwApplicationError('<p>OpenBR is installed, but there was an error while executing it.</p><code>' + err + '</code>');
+                }
+                var genderResult = csv.parse('./tmp/br/gender_' + md5(url) +
+                                             '.csv');
+
+                var gender = genderResult[0].Gender;
+                if (typeof(gender) === 'undefined') {
+                  gender = 'Unknown';
+                }
+                var genderSpan = document.getElementById('gender');
+                genderSpan.innerHTML = gender;
+              });
+
+              exec('br -algorithm AgeEstimation -enroll ' + process.cwd() +
+                   '/tmp/br/' + md5(url) + '.image ' + process.cwd() +
+                   '/tmp/br/age_' + md5(url) + '.csv', function(err, result) {
+                if (err) {
+                  throwApplicationError('<p>OpenBR is installed, but there was an error while executing it.</p><code>' + err + '</code>');
+                  return;
+                }
+                var ageResult = csv.parse('./tmp/br/age_' + md5(url) + '.csv');
+
+                var age = ageResult[0].Age;
+                var ageSpan = document.getElementById('age');
+                if (typeof(age) === 'undefined') {
+                  ageSpan.innerHTML = 'Unknown';
+                } else {
+                  ageSpan.innerHTML = Math.round(age);
+                }
+              });
+              $('#age-gender-modal').modal('show');
             }
           });
-          $('#age-gender-modal').modal('show');
         });
       }
     });
@@ -307,7 +311,7 @@ function showContextMenu(url, from) {
 
           fdialogs.saveFile(content, fileName, function(err, path) {
               if (err) {
-                alert('Could not save image. Reason: ' + err);
+                throwApplicationError('<p>An error occured while trying to save the image.</p><code>' + err + '</code>');
               }
           });
         });
@@ -376,6 +380,32 @@ function safeDecodeURIComponent(url) {
   } catch (ex) {
     return url;
   }
+}
+
+/**
+ * Searches for a binary file and returns whether it was found or not.
+ * @param string binary - The name of the binary to search for.
+ * @param function cb - The function callback.
+ */
+function isBinaryInstalled(binary, cb){
+  exec(binary,
+    function(error, stdout, stderr) {
+      if (stderr || error) {
+        cb(false);
+      } else {
+        cb(true);
+      }
+  });
+}
+
+/**
+ * Throws an error message to the user and then returns.
+ * @param string message - The error message to display to the user.
+ */
+function throwApplicationError(message) {
+  $('#error-message').html(message);
+  $('#error-modal').modal('show');
+  return;
 }
 
 /**
