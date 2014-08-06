@@ -96,13 +96,13 @@ module.exports = function(grunt) {
 
   grunt.registerTask('start', function() {
     var start = parseBuildPlatforms();
-    if(start.win) {
+    if (start.win) {
       grunt.task.run('exec:win');
-    } else if(start.mac) {
+    } else if (start.mac) {
       grunt.task.run('exec:mac');
-    } else if(start.linux32) {
+    } else if (start.linux32) {
       grunt.task.run('exec:linux32');
-    } else if(start.linux64) {
+    } else if (start.linux64) {
       grunt.task.run('exec:linux64');
     } else {
       grunt.log.writeln('OS not supported.');

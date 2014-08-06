@@ -1,13 +1,14 @@
+var fs = require('fs');
+var exec = require('child_process').exec;
+var http = require('http');
+var gui = require('nw.gui');
+
 var googleImages = require('google-images');
 var exif = require('exif2');
 var request = require('request');
-var fs = require('fs');
 var md5 = require('MD5');
 var shredfile = require('shredfile')({});
-var gui = require('nw.gui');
-var exec = require('child_process').exec;
 var csv = require('csv-to-json');
-var http = require('http');
 var urlHelper = require('url');
 var fdialogs = require('node-webkit-fdialogs');
 var validator = require('validator');
@@ -43,7 +44,7 @@ function imageSearch(query) {
         results.className = 'page-header';
 
         // Until we have some results, just show 0. Better than nothing, right?
-        if(resultsCount === 0) {
+        if (resultsCount === 0) {
           results.innerHTML = '<h3>0 Results</h3>';
         }
         images.forEach(function(image) {
@@ -69,10 +70,10 @@ function imageSearch(query) {
           });
 
           req.on('end', function() {
-            exif ('./tmp/' + md5(image.url), function(err, obj) {
+            exif('./tmp/' + md5(image.url), function(err, obj) {
               var exifData = '';
               if (err === null) {
-                for(var key in obj) {
+                for (var key in obj) {
                   if (obj.hasOwnProperty(key) &&
                       key !== 'exiftool version number' &&
                       key !== 'file name' &&
@@ -95,7 +96,7 @@ function imageSearch(query) {
               // If we don't have a proxy setup there's no point in trying to
               // proxy the image.
               var src = proxifyUrl(image.url);
-              if(getSetting('proxy') === '') {
+              if (getSetting('proxy') === '') {
                 src = image.url;
               }
 
@@ -241,7 +242,7 @@ function showContextMenu(url, from) {
     { label: 'View Full Image',
       click: function() {
         var src = proxifyUrl(url);
-        if(getSetting('proxy') === '') {
+        if (getSetting('proxy') === '') {
           src = url;
         }
 
@@ -304,8 +305,8 @@ function showContextMenu(url, from) {
           var content = new Buffer(body, 'binary');
           var fileName = getFileName(url);
 
-          fdialogs.saveFile(content, fileName, function (err, path) {
-              if(err) {
+          fdialogs.saveFile(content, fileName, function(err, path) {
+              if (err) {
                 alert('Could not save image. Reason: ' + err);
               }
           });
@@ -338,7 +339,7 @@ function getSetting(name) {
     'deletion': 'shred-images'
   };
 
-  if(localStorage.getItem(name)) {
+  if (localStorage.getItem(name)) {
     return localStorage.getItem(name);
   } else {
     return defaultSettings[name];
@@ -421,7 +422,7 @@ $(document).ready(function() {
                                  require_tld: true,
                                  require_protocol: true };
 
-        if(validator.isURL(imageUrl.query.url, validatorOptions) === false) {
+        if (validator.isURL(imageUrl.query.url, validatorOptions) === false) {
           resp.writeHead(200, { 'Content-Type': 'text/plain' });
           resp.end('BADURL');
           return;
@@ -442,7 +443,7 @@ $(document).ready(function() {
 
   // We need to reset the age and gender otherwise we're left with
   // stale data.
-  $('#age-gender-modal').on('hidden.bs.modal', function () {
+  $('#age-gender-modal').on('hidden.bs.modal', function() {
       $('#age').html('<i>Waiting...</i>');
       $('#gender').html('<i>Waiting...</i>');
   });
@@ -467,21 +468,21 @@ $(document).ready(function() {
 
   $('#save-settings').click(function() {
 
-    if($('#http-proxy').val() !== '' && $('#local-proxy-port').val() === '') {
+    if ($('#http-proxy').val() !== '' && $('#local-proxy-port').val() === '') {
       alert('You must specify an unused local port to use a proxy.');
       return false;
     }
 
-    if($('#local-proxy-port').val() !== getSetting('local-proxy-port')) {
+    if ($('#local-proxy-port').val() !== getSetting('local-proxy-port')) {
       alert('You must restart Open Source Media for these changes to take ' +
             'effect.');
     }
 
-    if($('#keep-images').is(':checked')) {
+    if ($('#keep-images').is(':checked')) {
       saveSetting('deletion', 'keep-images');
-    } else if($('#delete-images').is(':checked')) {
+    } else if ($('#delete-images').is(':checked')) {
       saveSetting('deletion', 'delete-images');
-    } else if($('#shred-images').is(':checked')) {
+    } else if ($('#shred-images').is(':checked')) {
       saveSetting('deletion', 'shred-images');
     }
 

@@ -48,7 +48,7 @@ window.onload = function() {
   fs.readdir('./tmp/', function(err, files) {
     // On first run the ./tmp/ directory won't exist, and therefore we won't
     // have any images stored.
-    if(typeof(files) === 'undefined') {
+    if (typeof(files) === 'undefined') {
       window.location = 'main.html';
       return;
     }
