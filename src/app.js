@@ -106,7 +106,7 @@ function imageSearch(query) {
 
               // Let's pretend I never wrote this...
               /* jshint maxlen: false */
-              imagesDiv.innerHTML += '<div class="thumbnail"><img id="' + md5(image.url) + '" src="' + src + '" title="' + getFileName(image.url) + '" onclick="showExifData(\'' + image.url + '\', \'' + window.btoa(unescape(encodeURIComponent(exifData))) + '\')" oncontextmenu="showContextMenu(\'' + image.url + '\', \'' + image.from + '\')"><br><br></div>';
+              imagesDiv.innerHTML += '<div class="thumbnail"><img class="thumbnail-image" id="' + md5(image.url) + '" src="' + src + '" title="' + getFileName(image.url) + '" onclick="showExifData(\'' + image.url + '\', \'' + window.btoa(unescape(encodeURIComponent(exifData))) + '\')" oncontextmenu="showContextMenu(\'' + image.url + '\', \'' + image.from + '\')"><br><br></div>';
               eorBreak.className = '';
               endOfResults.className = 'lead text-center text-muted';
             });
