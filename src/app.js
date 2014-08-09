@@ -106,7 +106,7 @@ function imageSearch(query) {
 
               // Let's pretend I never wrote this...
               /* jshint maxlen: false */
-              imagesDiv.innerHTML += '<div class="thumbnail"><img class="thumbnail-image" id="' + md5(image.url) + '" src="' + src + '" title="' + getFileName(image.url) + '" onclick="showExifData(\'' + image.url + '\', \'' + window.btoa(unescape(encodeURIComponent(exifData))) + '\')" oncontextmenu="showContextMenu(\'' + image.url + '\', \'' + image.from + '\')"><br><br></div>';
+              imagesDiv.innerHTML += '<div class="thumbnail"><img class="thumbnail-image" id="' + md5(image.url) + '" src="' + src + '" title="' + getFileName(image.url) + '" onclick="showExifData(\'' + image.url + '\', \'' + window.btoa(unescape(encodeURIComponent(exifData))) + '\')" oncontextmenu="showContextMenu(\'' + image.url + '\', \'' + image.from + '\', \'' + window.btoa(unescape(encodeURIComponent(exifData))) + '\')"><br><br></div>';
               eorBreak.className = '';
               endOfResults.className = 'lead text-center text-muted';
             });
@@ -169,8 +169,9 @@ function showExifData(url, data) {
  * Shows a context menu when right clicking on an image.
  * @param string url - The URL where the image is located.
  * @param string data - The URL of the page it came from.
+ * @param string exifData - A base64 encoded string containing the EXIF data.
  */
-function showContextMenu(url, from) {
+function showContextMenu(url, from, exifData) {
   // TODO: Reduce the amount of statements. Yeah, this is a pile of fuck.
   /* jshint maxstatements:25 */
   var menu = new gui.Menu();
@@ -315,10 +316,27 @@ function showContextMenu(url, from) {
           var fileName = getFileName(url);
 
           fdialogs.saveFile(content, fileName, function(err, path) {
-              if (err) {
-                throwApplicationError('<p>An error occured while trying to save the image.</p><code>' + err + '</code>');
-              }
+            if (err) {
+              throwApplicationError('<p>An error occured while trying to save the image.</p><code>' + err + '</code>');
+            }
           });
+        });
+      }
+    });
+
+  var saveExifDataItem = new gui.MenuItem(
+    { label: 'Save EXIF Data',
+      click: function() {
+        /* jshint quotmark: false */
+        exifData = window.atob(exifData).replace(/<br\s*[\/]?>/gi, "\n");
+
+        var content = new Buffer(exifData, 'utf-8');
+        var fileName = getFileName(url) + '.txt';
+
+        fdialogs.saveFile(content, fileName, function(err, path) {
+          if (err) {
+            throwApplicationError('<p>An error occured while trying to save the EXIF data.</p><code>' + err + '</code>');
+          }
         });
       }
     });
@@ -329,6 +347,7 @@ function showContextMenu(url, from) {
   menu.append(copyImageUrlItem);
   menu.append(copyPageUrlItem);
   menu.append(saveImageItem);
+  menu.append(saveExifDataItem);
   menu.append(new gui.MenuItem({ type: 'separator' }));
   menu.append(rotateLeftItem);
   menu.append(rotateRightItem);
@@ -479,8 +498,22 @@ $(document).ready(function() {
   // We need to reset the age and gender otherwise we're left with
   // stale data.
   $('#age-gender-modal').on('hidden.bs.modal', function() {
-      $('#age').html('<i>Waiting...</i>');
-      $('#gender').html('<i>Waiting...</i>');
+    $('#age').html('<i>Waiting...</i>');
+    $('#gender').html('<i>Waiting...</i>');
+  });
+
+  $('#exif-save-button').click(function() {
+    /* jshint quotmark: false */
+    var exifData = $('#exif-data').html().replace(/<br\s*[\/]?>/gi, "\n");
+
+    var content = new Buffer(exifData, 'utf-8');
+    var fileName = $('#exif-title').html() + '.txt';
+
+    fdialogs.saveFile(content, fileName, function(err, path) {
+      if (err) {
+        throwApplicationError('<p>An error occured while trying to save the EXIF data.</p><code>' + err + '</code>');
+      }
+    });
   });
 
   $('a[href="#settings"]').click(function() {
@@ -502,7 +535,6 @@ $(document).ready(function() {
   });
 
   $('#save-settings').click(function() {
-
     if ($('#http-proxy').val() !== '' && $('#local-proxy-port').val() === '') {
       alert('You must specify an unused local port to use a proxy.');
       return false;
