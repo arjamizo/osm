@@ -29,14 +29,14 @@ Binaries are available for Windows, Mac, and Linux and can be downloaded here: h
 
 The source is available at https://github.com/nmalcolm/osm. See `HACKING.md` for more information. If you are unsure what to do with this, you may prefer to use a pre-built binary instead.
 
-No installation is needed. You only need to run OSM and the rest will be taken care for you.
+No installation is needed, although packages may become available in the future.
 
 Hacking
 =======
 
 Please see `HACKING.md`.
 
-Help?
+Help
 =======
 
 Please see `HELP.md`.

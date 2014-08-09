@@ -1,6 +1,7 @@
 var fs = require('fs');
-var exec = require('child_process').exec;
 var http = require('http');
+var exec = require('child_process').exec;
+var urlHelper = require('url');
 var gui = require('nw.gui');
 
 var googleImages = require('google-images');
@@ -9,7 +10,6 @@ var request = require('request');
 var md5 = require('MD5');
 var shredfile = require('shredfile')({});
 var csv = require('csv-to-json');
-var urlHelper = require('url');
 var fdialogs = require('node-webkit-fdialogs');
 var validator = require('validator');
 
@@ -42,7 +42,7 @@ function imageSearch(query) {
       var resultsDiv = document.getElementById('results');
 
       if (err) {
-        throwApplicationError('<p>Could not connect to Google\'s API server. Please make sure you have an internet connection and your network can connect to <code>ajax.googleapis.com</code>.</p><code>' + err + '</code>');
+        throwApplicationError('<p><code>ajax.googleapis.com</code> returned an error.</p><code>' + err + '</code>');
       }
 
       if (images[0]) {
@@ -203,7 +203,7 @@ function showContextMenu(url, from) {
 
         req.on('end', function() {
           isBinaryInstalled('br', function(result) {
-            if(result === false) {
+            if (result === false) {
               throwApplicationError('OpenBR could not be found in PATH. Please make sure OpenBR is installed.');
             } else {
               exec('br -algorithm GenderEstimation -enroll ' + process.cwd() +
