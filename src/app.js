@@ -169,6 +169,7 @@ function showContextMenu(url, from, exifData) {
 
   var flipImageItem = new gui.MenuItem(
     { label: 'Toggle Flip Image',
+      icon: 'src/res/menuitem/flip.png',
       click: function() {
         var image = $('img[src="' + url + '"]');
         if (image.hasClass('flipped')) {
@@ -181,6 +182,7 @@ function showContextMenu(url, from, exifData) {
 
   var searchOnTinEyeItem = new gui.MenuItem(
     { label: 'Search on TinEye',
+      icon: 'src/res/menuitem/tineye.png',
       click: function() {
         gui.Shell.openExternal('http://www.tineye.com/search?url=' + url);
       }
@@ -189,6 +191,7 @@ function showContextMenu(url, from, exifData) {
   // TODO: Shred images.
   var genderAgeItem = new gui.MenuItem(
     { label: 'Age/Gender (Experimental)',
+      icon: 'src/res/menuitem/openbr.png',
       click: function() {
         var file = fs.createWriteStream('./tmp/br/' + md5(url) + '.image');
 
@@ -247,6 +250,7 @@ function showContextMenu(url, from, exifData) {
 
   var viewFullImageItem = new gui.MenuItem(
     { label: 'View Full Image',
+      icon: 'src/res/menuitem/viewfullimage.png',
       click: function() {
         var src = proxifyUrl(url);
         if (getSetting('proxy') === '') {
@@ -260,6 +264,7 @@ function showContextMenu(url, from, exifData) {
 
   var previewPageItem = new gui.MenuItem(
     { label: 'Preview Page (No Proxy)',
+      icon: 'src/res/menuitem/previewpage.png',
       click: function() {
         // Let's pretend I never wrote this...
         /* jshint maxlen: false */
@@ -270,6 +275,7 @@ function showContextMenu(url, from, exifData) {
 
   var rotateRightItem = new gui.MenuItem(
     { label: 'Rotate Right',
+      icon: 'src/res/menuitem/rotateright.png',
       click: function() {
         var degrees = getRotationDegrees($('img[src="' + url + '"]'));
         $('img[src="' + url + '"]').rotate(degrees + 90);
@@ -278,6 +284,7 @@ function showContextMenu(url, from, exifData) {
 
   var rotateLeftItem = new gui.MenuItem(
     { label: 'Rotate Left',
+      icon: 'src/res/menuitem/rotateleft.png',
       click: function() {
         var degrees = getRotationDegrees($('img[src="' + url + '"]'));
         $('img[src="' + url + '"]').rotate(degrees - 90);
@@ -286,6 +293,7 @@ function showContextMenu(url, from, exifData) {
 
   var copyImageUrlItem = new gui.MenuItem(
     { label: 'Copy Image URL',
+      icon: 'src/res/menuitem/copyimageurl.png',
       click: function() {
         clipboard.set(safeDecodeURIComponent(url), 'text');
       }
@@ -293,6 +301,7 @@ function showContextMenu(url, from, exifData) {
 
   var copyPageUrlItem = new gui.MenuItem(
     { label: 'Copy Page URL',
+      icon: 'src/res/menuitem/copypageurl.png',
       click: function() {
         clipboard.set(safeDecodeURIComponent(from), 'text');
       }
@@ -300,6 +309,7 @@ function showContextMenu(url, from, exifData) {
 
   var saveImageItem = new gui.MenuItem(
     { label: 'Save Image',
+      icon: 'src/res/menuitem/saveimage.png',
       click: function() {
         var imageData = '';
 
@@ -323,6 +333,7 @@ function showContextMenu(url, from, exifData) {
 
   var saveExifDataItem = new gui.MenuItem(
     { label: 'Save EXIF Data',
+      icon: 'src/res/menuitem/saveexifdata.png',
       click: function() {
         /* jshint quotmark: false */
         exifData = window.atob(exifData).replace(/<br\s*[\/]?>/gi, "\n");
