@@ -189,6 +189,13 @@ function showContextMenu(url, from, exifData) {
       }
     });
 
+  var searchOnTinEyeItem = new gui.MenuItem(
+    { label: 'Search on TinEye',
+      click: function() {
+        gui.Shell.openExternal('http://www.tineye.com/search?url=' + url);
+      }
+    });
+
   // TODO: Shred images.
   var genderAgeItem = new gui.MenuItem(
     { label: 'Age/Gender (Experimental)',
@@ -346,12 +353,15 @@ function showContextMenu(url, from, exifData) {
   menu.append(previewPageItem);
   menu.append(copyImageUrlItem);
   menu.append(copyPageUrlItem);
+  menu.append(new gui.MenuItem({ type: 'separator' }));
   menu.append(saveImageItem);
   menu.append(saveExifDataItem);
   menu.append(new gui.MenuItem({ type: 'separator' }));
   menu.append(rotateLeftItem);
   menu.append(rotateRightItem);
   menu.append(flipImageItem);
+  menu.append(new gui.MenuItem({ type: 'separator' }));
+  menu.append(searchOnTinEyeItem);
   menu.append(genderAgeItem);
   menu.popup(x, y);
 }
