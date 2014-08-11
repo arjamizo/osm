@@ -358,8 +358,8 @@ function showContextMenu(url, from, exifData) {
   menu.append(saveImageItem);
   menu.append(saveExifDataItem);
   menu.append(new gui.MenuItem({ type: 'separator' }));
-  menu.append(rotateLeftItem);
   menu.append(rotateRightItem);
+  menu.append(rotateLeftItem);
   menu.append(flipImageItem);
   menu.append(new gui.MenuItem({ type: 'separator' }));
   menu.append(searchOnTinEyeItem);
