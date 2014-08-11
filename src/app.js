@@ -277,8 +277,8 @@ function showContextMenu(url, from, exifData) {
     { label: 'Rotate Right',
       icon: 'src/res/menuitem/rotateright.png',
       click: function() {
-        var degrees = getRotationDegrees($('img[src="' + url + '"]'));
-        $('img[src="' + url + '"]').rotate(degrees + 90);
+        var degrees = getRotationDegrees($('img[id="' + md5(url) + '"]'));
+        $('img[id="' + md5(url) + '"]').rotate(degrees + 90);
       }
     });
 
@@ -286,8 +286,8 @@ function showContextMenu(url, from, exifData) {
     { label: 'Rotate Left',
       icon: 'src/res/menuitem/rotateleft.png',
       click: function() {
-        var degrees = getRotationDegrees($('img[src="' + url + '"]'));
-        $('img[src="' + url + '"]').rotate(degrees - 90);
+        var degrees = getRotationDegrees($('img[id="' + md5(url) + '"]'));
+        $('img[id="' + md5(url) + '"]').rotate(degrees - 90);
       }
     });
 
