@@ -171,7 +171,7 @@ function showContextMenu(url, from, exifData) {
     { label: 'Toggle Flip Image',
       icon: 'src/res/menuitem/flip.png',
       click: function() {
-        var image = $('img[src="' + url + '"]');
+        var image = $('img[id="' + md5(url) + '"]');
         if (image.hasClass('flipped')) {
           image.removeClass('flipped');
         } else {
