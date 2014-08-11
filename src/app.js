@@ -123,16 +123,6 @@ function imageSearch(query) {
   }
 }
 
-/**
- * Takes a string and capitalizes the first letter of each word.0
- * @param string str - The string to convert to uppercase.
- */
-function ucwords(str) {
-    return (str + '').replace(/^([a-z])|\s+([a-z])/g, function($1) {
-        return $1.toUpperCase();
-    });
-}
-
 // Stolen! Credits go to this chap: http://stackoverflow.com/users/1219011/twist
 // Original: http://stackoverflow.com/a/11840120
 // Modified to remove non-webkit CSS rules.
@@ -404,35 +394,6 @@ function proxifyUrl(url) {
 }
 
 /**
- * Takes a URL and decodes it, if possible. If it can't it returns the
- * original URL.
- * @param string url - The URL to decode.
- */
-function safeDecodeURIComponent(url) {
-  try {
-    return decodeURIComponent(url);
-  } catch (ex) {
-    return url;
-  }
-}
-
-/**
- * Searches for a binary file and returns whether it was found or not.
- * @param string binary - The name of the binary to search for.
- * @param function cb - The function callback.
- */
-function isBinaryInstalled(binary, cb){
-  exec(binary,
-    function(error, stdout, stderr) {
-      if (stderr || error) {
-        cb(false);
-      } else {
-        cb(true);
-      }
-  });
-}
-
-/**
  * Throws an error message to the user and then returns.
  * @param string message - The error message to display to the user.
  */
@@ -440,29 +401,6 @@ function throwApplicationError(message) {
   $('#error-message').html(message);
   $('#error-modal').modal('show');
   return;
-}
-
-/**
- * Takes a URL and parses the file name out of it. Example:
- * http://www.example.com/images/logo.png -> logo.png
- * @param string url - The URL to parse.
- */
-function getFileName(url) {
-  // NOTE: I tried to get this to unescape the file name, but failed. Epicly.
-  // If you know how to do this, feel free to submit a pull request.
-  var parsedUrl = urlHelper.parse(url);
-  var splitUrl = parsedUrl.path.split('/');
-  return splitUrl[splitUrl.length-1];
-}
-
-/**
- * Takes a URL and parses the domain name out of it. Example:
- * http://www.example.com/images/logo.png -> www.example.com
- * @param string url - The URL to parse.
- */
-function getDomain(url) {
-  var parsedUrl = urlHelper.parse(url);
-  return parsedUrl.hostname;
 }
 
 /**
@@ -595,5 +533,69 @@ $(document).ready(function() {
     imageSearch($('#query').val());
     return false;
   });
-
 });
+
+
+// The functions below are generic and non-specific to OSM.
+
+/**
+ * Takes a string and capitalizes the first letter of each word.
+ * @param string str - The string to convert to uppercase.
+ */
+function ucwords(str) {
+    return (str + '').replace(/^([a-z])|\s+([a-z])/g, function($1) {
+        return $1.toUpperCase();
+    });
+}
+
+/**
+ * Takes a URL and parses the file name out of it. Example:
+ * http://www.example.com/images/logo.png -> logo.png
+ * @param string url - The URL to parse.
+ */
+function getFileName(url) {
+  // NOTE: I tried to get this to unescape the file name, but failed. Epicly.
+  // If you know how to do this, feel free to submit a pull request.
+  var parsedUrl = urlHelper.parse(url);
+  var splitUrl = parsedUrl.path.split('/');
+  return splitUrl[splitUrl.length-1];
+}
+
+/**
+ * Takes a URL and parses the domain name out of it. Example:
+ * http://www.example.com/images/logo.png -> www.example.com
+ * @param string url - The URL to parse.
+ */
+function getDomain(url) {
+  var parsedUrl = urlHelper.parse(url);
+  return parsedUrl.hostname;
+}
+
+/**
+ * Searches for a binary file and returns whether it was found or not.
+ * @param string binary - The name of the binary to search for.
+ * @param function cb - The function callback.
+ */
+function isBinaryInstalled(binary, cb){
+  exec(binary,
+    function(error, stdout, stderr) {
+      if (stderr || error) {
+        cb(false);
+      } else {
+        cb(true);
+      }
+  });
+}
+
+/**
+ * Takes a URL and decodes it, if possible. If it can't it returns the
+ * original URL.
+ * @param string url - The URL to decode.
+ */
+function safeDecodeURIComponent(url) {
+  try {
+    return decodeURIComponent(url);
+  } catch (ex) {
+    return url;
+  }
+}
