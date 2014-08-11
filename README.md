@@ -52,3 +52,5 @@ License
 =======
 
 Open Source Media is released, without warranty, under the The MIT License. Please see `LICENSE`.
+
+Some icons by [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/). Licensed under a [Creative Commons Attribution 3.0 License](http://creativecommons.org/licenses/by/3.0/).
