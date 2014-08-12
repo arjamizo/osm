@@ -10,15 +10,16 @@ Screenshots
 
 Main Application
 -------
-![main](https://cloud.githubusercontent.com/assets/973100/3760514/208d436a-1879-11e4-9626-886b26347cdb.png)
+![main](https://cloud.githubusercontent.com/assets/973100/3886952/2e838cea-21e8-11e4-900e-443a711cc30c.png)
 
 Search
 -------
-![search](https://cloud.githubusercontent.com/assets/973100/3760521/4a41b13c-1879-11e4-8b30-12013ff54279.png)
+![search](https://cloud.githubusercontent.com/assets/973100/3886960/40e8d6a6-21e8-11e4-83ec-281a42dd6858.png)
 
 Settings
 -------
-![settings](https://cloud.githubusercontent.com/assets/973100/3760524/53a8a2b2-1879-11e4-8363-2608e770f77e.png)
+![settings](https://cloud.githubusercontent.com/assets/973100/3886961/4a1943a0-21e8-11e4-81cd-52ee36136540.png)
+
 
 Installation
 =======
