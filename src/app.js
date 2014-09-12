@@ -266,10 +266,14 @@ function showContextMenu(url, from, exifData) {
     { label: 'Preview Page (No Proxy)',
       icon: 'src/res/menuitem/previewpage.png',
       click: function() {
-        // Let's pretend I never wrote this...
-        /* jshint maxlen: false */
-        var pwin = open('private.html');
-        pwin.document.write('<iframe src="' + from + '" style="border: 0; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%" sandbox></iframe>');
+        var pwin = gui.Window.open('private.html', { title: url, toolbar: false });
+        pwin.show();
+
+        pwin.on('loaded', function() {
+          // Let's pretend I never wrote this...
+          /* jshint maxlen: false */
+          pwin.window.document.write('<iframe src="' + from + '" style="border: 0; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%" sandbox></iframe>');
+        });
       }
     });
 
