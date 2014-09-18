@@ -257,8 +257,12 @@ function showContextMenu(url, from, exifData) {
           src = url;
         }
 
-        var pwin = open('private.html');
-        pwin.document.write('<img src="' + src + '">');
+        var pwin = gui.Window.open('private.html', { title: url, toolbar: false });
+        pwin.show();
+
+        pwin.on('loaded', function() {
+          pwin.window.document.write('<img src="' + src + '">');
+        });
       }
     });
 
@@ -266,7 +270,7 @@ function showContextMenu(url, from, exifData) {
     { label: 'Preview Page (No Proxy)',
       icon: 'src/res/menuitem/previewpage.png',
       click: function() {
-        var pwin = gui.Window.open('private.html', { title: url, toolbar: false });
+        var pwin = gui.Window.open('private.html', { title: from, toolbar: false });
         pwin.show();
 
         pwin.on('loaded', function() {
