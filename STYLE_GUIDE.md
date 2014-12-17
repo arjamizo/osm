@@ -251,7 +251,7 @@ var foo = (a === b) ? 1 : 2;
 ## Do not extend built-in prototypes
 
 Do not extend the prototype of native JavaScript objects. Your future self will
-be forever grateful.
+be forever grateful. If this is really unavoidable - consider using [poser](https://github.com/bevacqua/poser).
 
 *Right:*
 
